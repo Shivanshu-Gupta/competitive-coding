@@ -25,5 +25,4 @@ void sortingTest() {
     for(int i = 0; i < 6; i++) {
         cout<<A[i]<<'\t'<<rank[i]<<endl;
     }
-
 }

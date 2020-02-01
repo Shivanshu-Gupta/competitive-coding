@@ -1,9 +1,8 @@
 #include "bits/stdc++.h"
+#include "../util/util.h"
 using namespace std;
 
 typedef vector<int> VI;
-
-void print(const VI &a);
 
 int kthSmallestRecur(const VI &a, int l1, const VI &b, int l2, int k) {
     int size1 = a.size() - l1, size2 = b.size() - l2;
@@ -46,6 +45,7 @@ double median(const VI &a, const VI &b) {
     }
 }
 
+// or just use c++ merge - http://www.cplusplus.com/reference/algorithm/merge/ (better implementation of merge)
 VI merge(const VI &a, const VI &b, VI &merged) {
     int m = a.size(), n = b.size();
     merged.resize(m + n);
@@ -74,11 +74,11 @@ void testKthSmallest() {
         sort(a.begin(), a.end());
         for(int i = 0; i < n; i++) b[i] = rand() % 20;
         sort(b.begin(), b.end());
-        print(a); print(b);
+        printVI(a); printVI(b);
 
         int k = 1 + rand() % (m + n);
         int kth = kthSmallestIter(a, 0, b, 0, k);
-        merge(a, b, c); print(c);
+        merge(a, b, c); printVI(c);
         cout << k << ' ' << kth << ' ' << c[k- 1] << endl;
         assert(kth == c[k-1]);
         cout << endl;
@@ -88,9 +88,4 @@ void testKthSmallest() {
 int main() {
     testKthSmallest();
     return 0;
-}
-
-void print(const VI &a) {
-    for(int x : a) cout << x << '\t';
-    cout << endl;
 }

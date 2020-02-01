@@ -14,3 +14,8 @@ void read_int(int &ret) {
         c = gc();
     }
 }
+
+void printVI(const VI &a) {
+    for(int x : a) cout << x << '\t';
+    cout << endl;
+}

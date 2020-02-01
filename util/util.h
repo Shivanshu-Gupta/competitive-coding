@@ -6,12 +6,13 @@
 #define MYLIBRARY_UTIL_H
 
 #include "bits/stdc++.h"
+using namespace std;
 
 #define debug(x) cout << '>' << #x << ':' << x << endl;
 
-#define rep(i,n) for(int i = 0; i < (n); i++)
 #define fori(i,a,b) for(int i = (a); i < (b); i++)
 #define ford(i,a,b) for(int i = (a); i > (b); i--)
+#define rep(i,n) fori(i,0,n)
 
 #define ms0(x) memset(x,0,sizeof(x))
 #define ms1(x) memset(x,0xff,sizeof(x))
@@ -28,6 +29,12 @@
 #define spresent(S, k) (S.find(k) != S.end())
 #define cpresent(C, e) (find(all(C), e) != C.end())
 
+#define vectypes(T) typedef vector<T> V##T; typedef vector<V##T> VV##T
+typedef int I; vectypes(I);
+typedef double D; vectypes(D);
+typedef pair<int, int> II; vectypes(II);
+
 void read_int(int &ret);
+void printVI(const VI &a);
 
 #endif //MYLIBRARY_UTIL_H

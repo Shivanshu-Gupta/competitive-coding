@@ -4,15 +4,6 @@
 
 using namespace std;
 
-#define vectypes(T) typedef vector<T> V##T; typedef vector<V##T> VV##T
-
-typedef int I;
-vectypes(I);
-typedef double D;
-vectypes(D);
-typedef pair<int, int> II;
-vectypes(II);
-
 struct Edge {
     int a, b, w;
 };
@@ -55,6 +46,9 @@ struct Graph {
     VI path;                    //!< used in DFS to keep track of path from root to current node.
 
     Graph(int n) {
+        auto m = cap[0];
+        auto x = max_element(m.begin(), m.end());
+
         adj.resize(n, VI());
         revAdj.resize(n, VI());
         w.resize(n, VII());
@@ -89,12 +83,12 @@ struct Graph {
     void bfs(int src);
 
     // 8. Tree Algorithms
-    int LA(int u, int k);
+    int kA(int u, int k);
     int LCA(int u, int v);
 
     // 2. Topological Sort Finding Algorithms
-    void topSortDFS(VI &revTopOrder);
-    void topSort(VI &topOrder);
+    VI topSortDFS();
+    VI topSort();
 
     // 3. Cut Vertex and Bridge Finding Algorithms
     void tarjan(int src, unordered_set<int> &aps, VII &bridges, VVII &BCCs);
@@ -152,7 +146,6 @@ void Graph::addEdge(int u, int v, int c) {
 void Graph::dfs_iter(int src) {
     int st = 0;
     s[st++] = src;
-    level[src] = 0;
     while (st) {
         int curr = s[--st];
         v[curr] = true;
@@ -160,8 +153,8 @@ void Graph::dfs_iter(int src) {
         // Backtrack to the parent.
         while (!path.empty() && path.back() != parent[curr]) path.pop_back();
         // Setup jump pointers to ancestors
-        for (int i = 0; (1 << i) <= path.size(); i++)
-            ancestor[curr].push_back(path[path.size() - (1 << i)]);
+        for(int i = 1; i <= path.size(); i<<=1)
+            ancestor[curr].push_back(path[path.size() - i]);
         path.push_back(curr);
 
         for (int nbr : adj[curr]) {
@@ -194,8 +187,8 @@ void Graph::dfs_recur(int src, VI &exitOrder) {
     in[src] = t++;
 
     // Setup jump pointers to ancestors
-    for (int i = 0; (1 << i) <= path.size(); i++)
-        ancestor[src].push_back(path[path.size() - (1 << i)]);
+    for(int i = 1; i <= path.size(); i<<=1)
+        ancestor[src].push_back(path[path.size() - i]);
     path.push_back(src);
 
     for (int nbr : adj[src]) {
@@ -245,12 +238,11 @@ void Graph::bfs(int src) {
  * 
  * @return the kth ancestor
  */
-int Graph::LA(int u, int k) {
+int Graph::kA(int u, int k) {
     while (k) {
         int x = 31 - __builtin_clz(k);
         u = ancestor[u][x];
         k &= (~(1 << x));
-        if (0) cout << u << ' ';
     }
     return u;
 }
@@ -267,24 +259,37 @@ int Graph::LA(int u, int k) {
  * @return Lowest common ancestor of u and v.
  */
 int Graph::LCA(int u, int v) {
-    if (level[u] < level[v]) swap(u, v);
-
     // bring the nodes to same level.
-    if (level[u] != level[v]) u = LA(u, level[u] - level[v]);
-    if (u == v) return u;
+    if (level[u] > level[v]) u = kA(u, level[u] - level[v]);
+    else if (level[u] < level[v]) v = kA(v, level[v] - level[u]);;
 
     // find LCA
-    int x = 31 - __builtin_clz(level[u]);       // level[u] > 0 as o/w u = v = root
-    while (x >= 0) {
-        if (ancestor[u][x] != ancestor[v][x]) {
+    int x = 0;
+    while(u != v) {
+        if((1 << (x+1)) > level[u] || ancestor[u][x+1] == ancestor[v][x+1]) {
+            // if the (1 << (x+1))th ancestor doesn't exist or it's same then move to the (1 << x)th ancestor.
             u = ancestor[u][x];
             v = ancestor[v][x];
-            x = 31 - __builtin_clz(level[u]);
+            x = 0;
         } else {
-            x--;
+            // o.w. continue to the next ancestor in the jump pointers.
+            x++;
         }
     }
-    return parent[u];
+    return u;
+
+//    if (u == v) return u;
+//    int x = 31 - __builtin_clz(level[u]);       // level[u] > 0 as o/w u = v = root
+//    while (x >= 0) {
+//        if (ancestor[u][x] != ancestor[v][x]) {
+//            u = ancestor[u][x];
+//            v = ancestor[v][x];
+//            x = 31 - __builtin_clz(level[u]);
+//        } else {
+//            x--;
+//        }
+//    }
+//    return parent[u];
 }
 
 
@@ -294,14 +299,17 @@ int Graph::LCA(int u, int v) {
  * of the vertices of a DAG.
  * -	Time Complexity: O(|V|+|E|)
  * 
- * @param revTopOrder   Reverse Topological order
+ * @return topOrder   Topological order
  */
-void Graph::topSortDFS(VI &revTopOrder) {
+VI Graph::topSortDFS() {
     int n = adj.size();
+    VI exitOrder;
     fill(v.begin(), v.end(), 0);
     for (int i = 0; i < n; i++) {
-        if (!v[i]) dfs_recur(i, revTopOrder);
+        if (!v[i]) dfs_recur(i, exitOrder);
     }
+    VI topOrder(exitOrder.rbegin(), exitOrder.rend());  // top order is reverse of exit order
+    return topOrder;
 }
 
 /**
@@ -315,10 +323,11 @@ void Graph::topSortDFS(VI &revTopOrder) {
  *      obtained using a priority queue instead of a queue. 
  *      -   Time Complexity: O((|V|+|E|)log|V|)
  * 
- * @param topOrder   Topological order
+ * @return topOrder   Topological order
  */
-void Graph::topSort(VI &topOrder) {
+VI Graph::topSort() {
     int n = adj.size();
+    VI topOrder;
     VI indeg(n, 0);
     for (int i = 0; i < n; i++) {
         for (int j : adj[i]) {
@@ -345,6 +354,7 @@ void Graph::topSort(VI &topOrder) {
             }
         }
     }
+    return topOrder;
 }
 
 

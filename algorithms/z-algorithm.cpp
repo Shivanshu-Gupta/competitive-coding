@@ -12,6 +12,7 @@ using namespace std;
 vector<int> zFunction(string &s) {
     int n = s.length();
     vector<int> z(n);
+//    z[0] = n;
     int l = 0, r = 0;   // r = max(i + z[i]) for all i seen till now.
     for(int i = 1; i < n; i++) {
         if(i < r) z[i] = min(r-i, z[i-l]);

@@ -110,4 +110,5 @@ void testHeap() {
 
 int main() {
     testHeap();
+    return 0;
 }

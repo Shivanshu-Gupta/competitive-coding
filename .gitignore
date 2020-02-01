@@ -61,6 +61,9 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-data_structures/
 **/.DS_Store
 **/*.dSYM/
+
+data_structures/
+Resources/An awesome list for competitive programming! - Codeforces_files
+Resources/An awesome list for competitive programming! - Codeforces.htm

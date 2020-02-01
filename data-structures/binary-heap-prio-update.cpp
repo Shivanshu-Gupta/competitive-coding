@@ -137,5 +137,6 @@ void testHeapPrioUpdate() {
 
 int main() {
     testHeapPrioUpdate();
+    return 0;
 }
 

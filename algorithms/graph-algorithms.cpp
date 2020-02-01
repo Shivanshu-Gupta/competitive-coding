@@ -1,6 +1,6 @@
 #include "bits/stdc++.h"
 #include "../util/util.h"
-#include "../data-structures/DisjointSet.cpp"
+#include "../data-structures/disjoin-set.cpp"
 
 using namespace std;
 
@@ -465,8 +465,8 @@ void Graph::BCC(VVII &BCCs) {
  * @param SCCs List of list of vertices in SCCs.
  */
 void Graph::kosaraju(VVI &SCCs) {
-    VI revTopOrder;
-    topSortDFS(revTopOrder);
+    VI topOrder = topSortDFS();
+    VI revTopOrder(topOrder.rbegin(), topOrder.rend());
     memset(&v[0], 0, sizeof(v[0]) * v.size());
 
     // DFS on reverse graph in the reverse order of exit i.e. the topological order.

@@ -1,0 +1,44 @@
+NIM-LIKE GAMES
+- 	https://www.topcoder.com/community/data-science/data-science-tutorials/algorithm-games/	-	General Discussion
+-	http://letuskode.blogspot.in/2014/08/grundy-numbers.html?view=sidebar	-	General Discussnion
+-	https://discuss.codechef.com/questions/79515/grundy-number 	-	Grundy Numbers
+-	https://www.hackerrank.com/topics/game-theory-and-grundy-numbers	-	Grundy Numbers
+-	http://blog.zacharyabel.com/2012/04/wythoffs-game-red-or-blue/	-	Wythoffs Game
+
+Characteristics of the Nim-like Games (impartial games under normal play convention):
+- 	Sequential. The players take turns one after the other, and there is no passing.
+- 	Impartial. Given a state of the game, the set of available moves does not depend on whether you are player 1 or player 2.
+- 	Perfect information.
+-	Guaranteed to end in a finite number of moves.
+-	There are no draws. 
+	-	Normal Game - player unable to make a move loses.  
+	-	Misère game - The last player to move loses.
+
+States have the following properties:
+1.	All terminal states are losing.
+2.	If a player is able to move to a losing state then he is in a winning state.
+3.	If a player is able to move only to the winning states then he is in a losing state.
+
+To characterise losing states, find a property P such that:
+1.	The eventual losing states (the ones from which no further move can be made) satisfies P.
+2.	From a state that satisfies P, it is impossible to move to another state that satisfies P.
+3.	From any state that does not satisfy P, it is possible to move to some state that satisfies P.
+A state is now a losing state iff it satisfies P.
+
+Sprague-Grundy theorem reduces the every state of a nim-like game to a single Nim pile of a 
+unique size. This pile size is called the nimber/Grundy number of the state.
+
+Grundy Number
+- The final losing position corresponds to the empty Nim pile and has Grundy number 0.
+- If we have calculated the Grundy numbers of all states we can move to, s1, s2 … sk, from the current state, s. Then,
+
+Grundy(s) = mex({Gundy(s1), Grundy(s2) … Grundy(sk)}) = min({0, 1, …} - {Gundy(s1), Grundy(s2) … Grundy(sk)}) = smallest non-negative number which is not the Grundy number of any reachable state
+
+- The Grundy numbers for each state can thus be enumerated recursively and the losing states are exactly those with Grundy number equal to 0.
+
+Grundy Sum
+-	A game composed of a collection of independently played nim-like games is nim-like as well. 
+-	The grundy number of a state of the composite game is the XOR of the grundy number of the
+	states of the subgames. This is called grundy sum.
+-	Independently playable => the game is made up of subgames such that each player can choose
+	to make a move in exactly one of the subgames at each step. Which one is upto the player.

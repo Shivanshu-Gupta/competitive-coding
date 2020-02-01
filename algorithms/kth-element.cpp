@@ -85,7 +85,7 @@ void testKthSmallest() {
     }
 }
 
-int main() {
+int main() {     // change to main() it want to run independently
     testKthSmallest();
     return 0;
 }

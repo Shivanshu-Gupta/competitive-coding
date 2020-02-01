@@ -1,0 +1,97 @@
+Bit Twiddling Hacks page: http://graphics.stanford.edu/~seander/bithacks.html
+Bit Arrays: http://stackoverflow.com/questions/2525310/how-to-define-and-work-with-an-array-of-bits-in-c
+
+// &   -  bitwise and
+// |   -  bitwise or
+// ^   -  bitwise xor
+// ~   -  bitwise not
+// <<  -  bitwise shift left
+// >>  -  bitwise shift right
+
+
+//  Test if the integer is even or odd.         (x & 1) == 0 ? even : odd
+
+//  Test if x = 2^k         1. (x && !(x & x-1)) ? yes : no
+                            2. (x && (x & (-x) == x)) ? yes : no    // uses the trick for isolation of rightmost 1-bit.
+
+//  Multiplication by 2^n                   y = x<<n            // use this to multiply by any number 
+
+//  Test if x, y have same signs            (x ^ y) < 0 ? same : different
+
+//  2k to 2k+1 and vice versa               y = x^1             // equivalent to toggling the last bit
+
+//  two's complement                        1. y = ~x + 1       // useful with unsigned integers.
+                                            2. y = -x
+
+
+//  Set the n-th bit                        y = x | (1<<n)
+
+//  Unset the n-th bit                      y = x & ~(1<<n)
+
+//  Toggle the n-th bit                     y = x ^ (1<<n)
+
+//  Isolate the n-th bit                    y = x & (1<<n)
+
+//  Test if the n-th bit is set             x & (1<<n) ? yes : no
+
+
+//  Set the rightmost bit.                  y = (x|1) = x | (x^1)
+
+//  Unset the rightmost bit.                y = x & (x^1)
+
+//  Toggle the rightmost bit.               y = (x^1)
+
+
+//  Isolate the rightmost 1-bit.            y = x & (-x)
+//      10111100  (x)
+//  &   01000100  (-x)
+//      --------
+//      00000100
+
+//  Right propagate the rightmost 1-bit.    y = x | (x-1)
+// eg:
+//      10111100  (x)
+//  |   10111011  (x-1)
+//      --------
+//      10111111
+
+//  Unset the rightmost 1-bit.              y = x & (x-1)
+
+
+//  Isolate the rightmost 0-bit.            y = ~x & (x+1)
+
+// compute mod(j, N) for N = 2^k            j & (N - 1)     // faster than j%N and also works for j < 0 
+
+*********************************************************************************************
+                                        GCC BUILTINS
+
+__builtin_ffs (int x)
+Find First Set          - Returns one plus the index of the least significant 1-bit of x, or if x is zero, returns zero.
+
+__builtin_clz (unsigned int x)
+Count Leading Zeroes    - Returns the number of leading 0-bits in x, starting at the most significant bit position. If x is 0, the result is undefined.
+
+__builtin_ctz (unsigned int x)
+Count Trailing Zeroes   - Returns the number of trailing 0-bits in x, starting at the least significant bit position. If x is 0, the result is undefined.
+
+__builtin_popcount (unsigned int x)
+Pop Count               - Returns the number of 1-bits in x.
+
+__builtin_parity (unsigned int x)
+Parity                  - Returns the parity of x, i.e. the number of 1-bits in x modulo 2.
+
+__builtin_abcl ([unsigned] long x), __builtin_abcll ([unsigned] long long x)
+Same as __builtin_abc() except for long or long long.
+
+
+int a=20; //10100
+
+//trailing zeroes
+cout<<__builtin_ctz(a)<<endl;   //gives 2
+cout<<__builtin_ctz(a<<4)<<endl;    //gives 6
+
+//leading zeroes
+cout<<__builtin_clz(a)<<endl;   //gives 27
+cout<<__builtin_clz(a>>4)<<endl;    //gives 31
+
+cout<<__builtin_clz(0)<<endl;   //gives 32

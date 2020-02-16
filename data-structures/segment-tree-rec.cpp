@@ -48,7 +48,6 @@ namespace segtreerec {
         int mid = ((l + r) >> 1);
         build(id << 1, l, mid);
         build(id << 1 | 1, mid, r);
-
         s[id] = s[id << 1] + s[id << 1 | 1];
     }
 
@@ -118,6 +117,5 @@ namespace segtreerec {
         return sum(x, y, id << 1, l, mid) + sum(x, y, id << 1 | 1, mid, r);
     }
 /************************************************************************************/
-
 };
 

@@ -1,7 +1,14 @@
 /**
- * Implementation of Mo's Algorithm (sqrt-decomposition for answering queries)
- *
- * Time Complexity: O((N+M)√N) where M = #queries.
+ * Implementation of Mo's Algorithm
+ *  - sqrt-decomposition based algorithm for range queries
+ *  - basically answer the queries **offline** in a special order.
+ *  - Restrictions
+ *      - cannot use online where the queries need to be answered in fixed order.
+ *      - cannot use this when there are update operations.
+ *      - need to be able to write the functions add() and remove()
+ *  - https://blog.anudeep2011.com/mos-algorithm/ - good explanation of  algorithm
+ *  - https://www.hackerrank.com/topics/mos-algorithm - Different applications of sqrt decompositions
+ *  - Time Complexity: O((N+M)√N) where M = #queries.
  */
 
 #include "bits/stdc++.h"
@@ -32,7 +39,6 @@ class MosAlgorithm {
         freq[a[pos]]++;
     }
 
-
     void remove(int pos, int &currAns) {
         freq[a[pos]]--;
         if(!freq[a[pos]]) currAns--;
@@ -40,17 +46,20 @@ class MosAlgorithm {
 
     /**
      * Mo's Algorithm
+     * - Assumes that query range is [l, r)
+     * - Trivial to modify for [l, r]
      * @param m     number of queries
      */
     void processQueries(int m) {
         sort(queries, queries + m, comp);
-        int currL = 0, currR = -1, currAns = 0;
+        int currL = 0, currR = 0, currAns = 0;
         for(int i = 0; i < m; i++) {
             Query &q = queries[i];
-            while(currL < q.l) remove(currL++, currAns);
+            // always do the adds before removes (http://codeforces.com/blog/entry/46399?#comment-308528)
             while(currL > q.l) add(--currL, currAns);
-            while(currR < q.r) add(++currR, currAns);
-            while(currR > q.r) remove(currR--, currAns);
+            while(currR < q.r) add(currR++, currAns);
+            while(currL < q.l) remove(currL++, currAns);
+            while(currR > q.r) remove(--currR, currAns);
             ans[q.idx] = currAns;
         }
     }

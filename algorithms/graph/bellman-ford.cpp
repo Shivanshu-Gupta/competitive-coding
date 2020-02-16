@@ -2,7 +2,7 @@
 // Status: Tested
 
 #include "bits/stdc++.h"
-#include "../util/util.h"
+#include "../../util/util.h"
 
 using namespace std;
 

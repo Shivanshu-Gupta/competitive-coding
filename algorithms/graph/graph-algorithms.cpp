@@ -1,6 +1,6 @@
 #include "bits/stdc++.h"
-#include "../util/util.h"
-#include "../data-structures/disjoin-set.cpp"
+#include "../../util/util.h"
+#include "../../data-structures/disjoin-set.cpp"
 
 using namespace std;
 
@@ -87,7 +87,7 @@ struct Graph {
     int LCA(int u, int v);
 
     // 2. Topological Sort Finding Algorithms
-    VI topSortDFS();
+    VI topSortDFS(bool reverse);
     VI topSort();
 
     // 3. Cut Vertex and Bridge Finding Algorithms
@@ -298,18 +298,22 @@ int Graph::LCA(int u, int v) {
  * @details Uses recursive DFS to get reverse topological ordering 
  * of the vertices of a DAG.
  * -	Time Complexity: O(|V|+|E|)
- * 
- * @return topOrder   Topological order
+ *
+ * @param reverse   return Topological order or Reverse Topological order
+ * @return order   Topological order/Reverse top
  */
-VI Graph::topSortDFS() {
+VI Graph::topSortDFS(bool reverse=false) {
     int n = adj.size();
     VI exitOrder;
     fill(v.begin(), v.end(), 0);
     for (int i = 0; i < n; i++) {
         if (!v[i]) dfs_recur(i, exitOrder);
     }
-    VI topOrder(exitOrder.rbegin(), exitOrder.rend());  // top order is reverse of exit order
-    return topOrder;
+    if(reverse) return exitOrder;
+    else {
+        VI topOrder(exitOrder.rbegin(), exitOrder.rend());  // top order is reverse of exit order
+        return topOrder;
+    }
 }
 
 /**
@@ -433,6 +437,7 @@ void Graph::BCC(VVII &BCCs) {
     // reset variables for use in tarjan()
     fillv(in, UINT32_MAX);
     fillv(out, UINT32_MAX);
+    fillv(low, UINT32_MAX);
     fillv(parent, -1);
 
     t = 0;
@@ -454,39 +459,41 @@ void Graph::BCC(VVII &BCCs) {
 /**
  * @brief Kosaraju's Algorithm 
  * @details Implementation of Kosaraju's Algo for SCCs of a directed graph.
- * SCCs form a DAG => DFS exits SCCs in reverse topological order.
- * 1.   Do DFS on the graph to get vertices in topological ordering.
- * 2.   Do DFS on the reverse graph (source <-> sink) in the topological
- * 		order. 
- * -    Each DFS will give a sink SCC in the reverse graph or a source SCC in the graph.
- * -    SCCs will be obtained in the topological order.
+ * - Theorem:
+ *  The graph itself may or may not be acyclic but **SCCs form a DAG**.
+ *  => If there is an edge (C, C') between the source SCC C and sink SCC C',
+ *  then out(C') < out[C] where out[C] = max(out[v]) for v \in C.
+ *  => DFS exits SCCs in reverse topological order.
+ * - Algorithm:
+ *  1.   Do DFS on the graph to get the topological ordering of vertices.
+ *  2.   Do a series of DFS's on the **reverse graph** (source <-> sink) in the topological
+ * 		order.
+ * 		- Each DFS call will fully explore a single SCC in the reverse graph in decreasing order of exit time.
+ *      - In other words, SCCs will be obtained in the topological order.
+ * -    https://cp-algorithms.com/graph/strongly-connected-components.html: description and sample problems
  * -    Time Complexity: O(|V|+|E|)
  * 
  * @param SCCs List of list of vertices in SCCs.
  */
 void Graph::kosaraju(VVI &SCCs) {
-    VI topOrder = topSortDFS();
-    VI revTopOrder(topOrder.rbegin(), topOrder.rend());
+    VI topOrder = topSortDFS(false);
     memset(&v[0], 0, sizeof(v[0]) * v.size());
 
-    // DFS on reverse graph in the reverse order of exit i.e. the topological order.
-    stack<int> s;
-    while (!revTopOrder.empty()) {
-        int node = revTopOrder.back();
-        revTopOrder.pop_back();
-        if (v[node]) continue;
+    // (iterative) DFS on reverse graph in the reverse order of exit i.e. the topological order.
+    vector<int> s;
+    int st = 0;
 
+    for(int node: topOrder) {
+        if (v[node]) continue;
         // new strongly connected component.
         VI scc;
-        s.push(node);
-        while (!s.empty()) {
-            node = s.top(); s.pop();
+        s[st++] = node;
+        while (st) {
+            node = s[--st];
             v[node] = true;
             scc.push_back(node);
             for (int nbr : revAdj[node]) {
-                if (!v[nbr]) {
-                    s.push(nbr);
-                }
+                if (!v[nbr]) s[st++] = nbr;
             }
         }
         SCCs.push_back(scc);
@@ -505,7 +512,9 @@ void Graph::kosaraju(VVI &SCCs) {
 
 void Graph::kruskal(const int &n, vector<Edge> &mst) {
     DisjointSet ds(n);
-    sort(edges.begin(), edges.end(), compEdge);
+    less<int>();
+    sort(edges.begin(), edges.end(),
+            [](const Edge &lhs, const Edge &rhs) {return lhs.w < rhs.w;});
     for (Edge e : edges) {
         if (ds.find(e.a) != ds.find(e.b)) {
             ds.merge(e.a, e.b);
@@ -597,7 +606,7 @@ int biCompsTest() {
             nodes.insert(e.first);
             nodes.insert(e.second);
         }
-        if (nodes.size() % 2)
+        if (nodes.size()&1)
             nOdd++;
         else
             nEven++;

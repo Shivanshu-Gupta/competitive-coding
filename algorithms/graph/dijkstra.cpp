@@ -104,8 +104,9 @@ void Dijkstra::djikstra_priority_queue(int src, int dest = -1) {
  * @details Implementation of Dijkstra's algorithm for single source 
  * shortest paths using set.
  * -    Cannot handle negative edge weights.
- * -    Although unlike priority queue implementation it removes 
+ * -    Unlike priority queue implementation it removes
  *      obsolete {node, dist} pairs, it seems to be slower.
+ * -    Relies on the fact that set stores elements in sorted order
  * -    Time Complexity: O(|V| + |E| log |V|)
  * 
  * @param src   Source vertex
@@ -135,14 +136,15 @@ void Dijkstra::djikstra_set(int src, int dest = -1) {
 
 VI Dijkstra::shortestPath(int src, int dest) {
     djikstra_priority_queue(src, dest);
-    VI revpath;
+    VI path;
     int u = dest;
     while(prev[u] != -1) {
-        revpath.push_back(u);
+        path.push_back(u);
         u = prev[u];
     }
-    revpath.push_back(u);
-    return revpath;
+    path.push_back(u);
+    reverse(path.begin(), path.end());
+    return path;
 }
 
 

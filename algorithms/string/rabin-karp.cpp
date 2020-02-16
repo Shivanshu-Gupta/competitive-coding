@@ -1,5 +1,5 @@
 /*
-Implementation of Rabin Karp Algorithm using Rollong Hash Technique.
+Implementation of Rabin Karp Algorithm using Rolling Hash Technique.
 
 Searches for the string w in the string s (of length k). Returns the
 0-based index of the first match (k if no match is found). 
@@ -79,8 +79,9 @@ int Rabin_Karp(string &s, string &w){
                 // Match Found
                 return i;
             }
-        } 
-        if(i) {
+        }
+        // cout << s.substr(i, m) << ' ' << ht1 << ' ' << ht2 << endl;
+        if(i + m < n) {
             // calculate hash of next segment (rolling hash)
             ht1 = mod(ht1 - mod(A[s[i]] * expB1[m - 1], M1), M1);
             ht1 = mod(ht1 * B, M1);
@@ -95,20 +96,21 @@ int Rabin_Karp(string &s, string &w){
     return n;
 }
 
-void rabinKarpTest()
+//int rabinKarpTest()
+int main()
 {
     string s, w;
     cin>>s>>w;
     for(char c : s) {
-        if(A.find(c) != A.end()) {
-            A.insert(make_pair(c, n_alpha++));
+        if(A.find(c) == A.end()) {
+            A.insert({c, n_alpha++});
         }
     }
     for(char c : w) {
-        if(A.find(c) != A.end()) {
+        if(A.find(c) == A.end()) {
             // If there's a char in w not in s then w can't be a substr of s.
             // cout<<"Not Found\n";
-            A.insert(make_pair(c, n_alpha++));
+            A.insert({c, n_alpha++});
         }
     }
 
@@ -116,4 +118,5 @@ void rabinKarpTest()
 
     int pos = Rabin_Karp(s, w);
     cout<<pos<<' '<<s.substr(pos, w.length())<<'='<<w<<endl;
+    return 0;
 }

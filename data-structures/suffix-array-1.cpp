@@ -69,14 +69,14 @@ int suffixArray1Test() {
 
         sort(L, L + N, cmp);
 
-        // Initialize rank for rank 0 suffix after sorting to its original index
+        // Initialize rank for rank 0 suffix after ordering to its original index
         // in suffixRank array
 
         suffixRank[stp][L[0].origIdx] = 0;
 
         for(int i = 1, currRank = 0; i < N; ++i) {
 
-            // compare ith ranked suffix ( after sorting ) to (i - 1)th ranked suffix
+            // compare ith ranked suffix ( after ordering ) to (i - 1)th ranked suffix
             // if they are equal till now assign same rank to ith as that of (i - 1)th
             // else rank for ith will be currRank ( i.e. rank of (i - 1)th ) plus 1, i.e ( currRank + 1 )
 

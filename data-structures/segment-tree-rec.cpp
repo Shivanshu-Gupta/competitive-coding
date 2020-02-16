@@ -1,5 +1,6 @@
 /*
     Recursive implementation of sum based Segment Tree
+    https://cp-algorithms.com/data_structures/segment_tree.html
     build - O(n)
     point modify - O(logn)
     interval modify - O(logn)

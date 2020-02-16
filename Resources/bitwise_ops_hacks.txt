@@ -8,39 +8,46 @@ Bit Arrays: http://stackoverflow.com/questions/2525310/how-to-define-and-work-wi
 // <<  -  bitwise shift left
 // >>  -  bitwise shift right
 
+// array of bits
+#define SetBit(A,k)     ( A[(k/32)] |= (1 << (k%32)) )
+#define ClearBit(A,k)   ( A[(k/32)] &= ~(1 << (k%32)) )
+#define TestBit(A,k)    ( A[(k/32)] & (1 << (k%32)) )
 
-//  Test if the integer is even or odd.         (x & 1) == 0 ? even : odd
+//  Test if the integer is even or odd.         (x & 1) ? odd : even
 
 //  Test if x = 2^k         1. (x && !(x & x-1)) ? yes : no
                             2. (x && (x & (-x) == x)) ? yes : no    // uses the trick for isolation of rightmost 1-bit.
 
 //  Multiplication by 2^n                   y = x<<n            // use this to multiply by any number 
 
-//  Test if x, y have same signs            (x ^ y) < 0 ? same : different
+//  Test if x, y have same signs            (x ^ y) < 0 ? different : same
 
-//  2k to 2k+1 and vice versa               y = x^1             // equivalent to toggling the last bit
+//  2k to 2k+1 and vice versa               y = x^1             // equivalent to toggling the last/rightmost/0-th bit
 
 //  two's complement                        1. y = ~x + 1       // useful with unsigned integers.
                                             2. y = -x
 
+// Operations on n-th bit
+//  Set                        y = x | (1<<n)
+//  Unset                      y = x & ~(1<<n)
+//  Toggle                     y = x ^ (1<<n)
+//  Isolate                    y = x & (1<<n)
+//  Test                       x & (1<<n) ? yes : no
 
-//  Set the n-th bit                        y = x | (1<<n)
+//  Operations on rightmost i.e. the 0-th bit (can also use the ops for n-th bit)
+//  Set      y = x | (x^1)
+//  Unset    y = x & (x^1)
 
-//  Unset the n-th bit                      y = x & ~(1<<n)
+// Useful Properties related to rightmost 1-bit (let it be the k-th bit)
+// 10111100     (x)
+// 10111011     (x-1)   - flip n-th bits to the right (n <= k)
+// 01000100     (-x)    - flip n-th bits to the left (n > k)
 
-//  Toggle the n-th bit                     y = x ^ (1<<n)
+// Useful Properties related to rightmost 0-bit (let it be the k-th bit)
+// 10001111     (x)
+// 10010000     (x+1)   - flip n-th bits to the right (n <= k)
 
-//  Isolate the n-th bit                    y = x & (1<<n)
-
-//  Test if the n-th bit is set             x & (1<<n) ? yes : no
-
-
-//  Set the rightmost bit.                  y = (x|1) = x | (x^1)
-
-//  Unset the rightmost bit.                y = x & (x^1)
-
-//  Toggle the rightmost bit.               y = (x^1)
-
+//  Unset the rightmost 1-bit.              y = x & (x-1)
 
 //  Isolate the rightmost 1-bit.            y = x & (-x)
 //      10111100  (x)
@@ -55,12 +62,9 @@ Bit Arrays: http://stackoverflow.com/questions/2525310/how-to-define-and-work-wi
 //      --------
 //      10111111
 
-//  Unset the rightmost 1-bit.              y = x & (x-1)
+//  Isolate the rightmost 0-bit.            y = ~x & (x+1)      // flip all bits and
 
-
-//  Isolate the rightmost 0-bit.            y = ~x & (x+1)
-
-// compute mod(j, N) for N = 2^k            j & (N - 1)     // faster than j%N and also works for j < 0 
+//  compute mod(j, N) for N = 2^k           j & (N - 1)     // faster than j%N and also works for j < 0
 
 *********************************************************************************************
                                         GCC BUILTINS

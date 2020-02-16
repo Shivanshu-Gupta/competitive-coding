@@ -1,5 +1,5 @@
 #include "bits/stdc++.h"
-#include "../util/util.h"
+#include "../../util/util.h"
 using namespace std;
 
 typedef vector<int> VI;
@@ -30,7 +30,6 @@ int kthSmallestIter(const VI &a, int al, const VI &b, int bl, int k) {
             al += i; k -= i;
         }
     }
-
 }
 
 double median(const VI &a, const VI &b) {

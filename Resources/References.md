@@ -52,7 +52,8 @@
     -   [RK and KMP Algorithms](https://www.topcoder.com/community/competitive-programming/tutorials/introduction-to-string-searching-algorithms/)
     -   [String Matching Algorithms - RK, KMP, Boyer-Moore ](https://www.cs.auckland.ac.nz/courses/compsci369s1c/lectures/GG-notes/CS369-StringAlgs.pdf)
     -   [Aho Corasick](https://cp-algorithms.com/string/aho_corasick.html)
-
+5. Max-Flow
+    - https://www.topcoder.com/community/competitive-programming/tutorials/maximum-flow-section-1/
 ## STL
 1.  https://www.topcoder.com/community/data-science/data-science-tutorials/power-up-c-with-the-standard-template-library-part-1/
 2.  https://www.topcoder.com/community/data-science/data-science-tutorials/power-up-c-with-the-standard-template-library-part-2/
@@ -64,3 +65,4 @@
 4. [Tricks for Optimising C++](https://en.wikibooks.org/wiki/Optimizing_C%2B%2B/Writing_efficient_code/Performance_improving_features)
 5. [Extremely fast modular multiplication: (a*b) % m ](https://cs.stackexchange.com/questions/77016/modular-multiplication)
 6. [Computing Large Binomial Coefficients Modulo Prime / Non-Prime](https://fishi.devtail.io/weblog/2015/06/25/computing-large-binomial-coefficients-modulo-prime-non-prime/)
+7. [Big-O cheatsheet](https://www.bigocheatsheet.com/)

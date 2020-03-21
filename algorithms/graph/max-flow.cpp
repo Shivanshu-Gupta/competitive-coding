@@ -130,9 +130,8 @@ void MaxFlow::addEdge(int x, int y, int c) {
  * 
  * @param src 	Source Vertex
  * @param sink 	Destination Vertex
- * @param f		Capacity of the currently explored path.
- * 
- * @return 	CApacity of the newly discovered src-sink path. 
+ *
+ * @return 	reachability of sink from src.
  */
 
 bool MaxFlow::bfs(int src, int sink) {
@@ -165,7 +164,7 @@ bool MaxFlow::bfs(int src, int sink) {
  * @param sink 	Destination Vertex
  * @param f		Capacity of the currently explored path.
  * 
- * @return 	CApacity of the newly discovered src-sink path. 
+ * @return 	Capacity of the newly discovered src-sink path.
  */
 int MaxFlow::dinic_dfs(int v1, int sink, int f) {
 	if(v1 == sink) return f;
@@ -175,7 +174,6 @@ int MaxFlow::dinic_dfs(int v1, int sink, int f) {
 		int v2 = e.to;
 		if(e.flow >= e.cap || level[v2] != level[v1] + 1)
 			continue;
-		;
 		if(int df = dinic_dfs(v2, sink, min(f, e.cap - e.flow))) {
 			e.flow += df;
 			res[v2][e.rev].flow -= df;

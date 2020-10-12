@@ -61,9 +61,6 @@
     -   [Aho Corasick](https://cp-algorithms.com/string/aho_corasick.html)
 5. Max-Flow
     - https://www.topcoder.com/community/competitive-programming/tutorials/maximum-flow-section-1/
-## STL
-1.  Topcoder: [Part 1](https://www.topcoder.com/community/data-science/data-science-tutorials/power-up-c-with-the-standard-template-library-part-1/), [Part 2](https://www.topcoder.com/community/data-science/data-science-tutorials/power-up-c-with-the-standard-template-library-part-2/)
-
 ## Misc
 1. [Online Encyclopedia Of Integer Sequences](http://oeis.org/) - useful to identify special sequences
 

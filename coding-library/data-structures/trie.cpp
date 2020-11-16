@@ -12,7 +12,8 @@ Sample Problems:
 -   Spoj        -   SUBXOR (good question)
 */
 
-#include "bits/stdc++.h"
+#include <iostream>
+#include <unordered_map>
 
 using namespace std;
 

@@ -2,7 +2,6 @@
 // Created by Shivanshu Gupta on 09/07/17.
 //
 
-#include "bits/stdc++.h"
 #include "util.h"
 
 void read_int(int &ret) {

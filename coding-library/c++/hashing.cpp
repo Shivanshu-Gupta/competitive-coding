@@ -12,7 +12,9 @@ References:
 2. https://stackoverflow.com/questions/4948780/magic-number-in-boosthash-combine - Boost hash_combine explanation
 */
 
-#include "bits/stdc++.h"
+#include <cstddef>
+#include <string>
+
 //using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,7 +81,7 @@ inline void hash_combiner_cpp11(std::size_t &seed, T const &v, Rest &&... rest) 
 */
 #define MAKE_HASHABLE(K, hash_combiner, ...) \
 namespace std {\
-    template<> struct hash<B> {\
+    template<> struct hash<K> {\
         std::size_t operator()(const K &k) const noexcept {\
             std::size_t ret = 0;\
             hash_combiner(ret, __VA_ARGS__);\
@@ -101,18 +103,19 @@ namespace std
     struct hash<Key> {
         std::size_t operator()(Key const& k) const noexcept {
             std::size_t h = 0;
-            hash_combine(h, k.key1, k.key2, k.key3);
+            hash_combiner_fold(h, k.key1, k.key2, k.key3);
             return h;
         }
     };
 }
+
 // Or using the macro
-MAKE_HASHABLE(Key, hash_combiner_fold, b.key1, b.key2, b.key3)
+//MAKE_HASHABLE(Key, hash_combiner_fold, b.key1, b.key2, b.key3)
 
 
-int test() {
+int testHashing() {
     Key key = {"asd", "as", true};
     std::size_t h=0;
-    hash_combiner_fold(h, b.key1, b.key2, b.key3); // compute hash of key
+    hash_combiner_fold(h, key.key1, key.key2, key.key3); // compute hash of key
     return 0;
 }

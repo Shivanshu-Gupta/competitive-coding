@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(MyLibrary)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 
 set(SOURCE_FILES
 #        algorithms/DP/fibonacci/fibonacci/fib_n.cpp
@@ -36,7 +36,8 @@ set(SOURCE_FILES
 #        minLexicRotation.cpp
         util/util.h
         util/util.cpp
-        util/matrix.cpp)
+        util/matrix.cpp
+        c++/hashing.cpp)
 
 add_executable(MyLibrary ${SOURCE_FILES} algorithms/ordering/merge-sort.cpp)
 add_executable(kth-element algorithms/ordering/kth-element.cpp ${SOURCE_FILES})

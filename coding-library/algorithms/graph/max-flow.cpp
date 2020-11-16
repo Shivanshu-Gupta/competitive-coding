@@ -57,7 +57,10 @@
  *      - K = {all the reachable vertices in R} ∪ {all unreachable vertices in L}
 */
 
-#include "bits/stdc++.h"
+#include <iostream>
+#include <vector>
+#include <set>
+#include <utility>
 
 #define fillv(v, x) fill((v).begin(), (v).end(), (x))
 

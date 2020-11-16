@@ -11,7 +11,8 @@
  *  - Time Complexity: O((N+M)√N) where M = #queries.
  */
 
-#include "bits/stdc++.h"
+#include <unordered_map>
+
 // #define DEBUG
 #define gc() getchar_unlocked()
 using namespace std;

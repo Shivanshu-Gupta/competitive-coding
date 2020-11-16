@@ -5,7 +5,10 @@
 #ifndef MYLIBRARY_UTIL_H
 #define MYLIBRARY_UTIL_H
 
-#include "bits/stdc++.h"
+#include <iostream>
+#include <vector>
+#include <utility>
+
 using namespace std;
 
 #define debug(x) cout << '>' << #x << ':' << x << endl;
